@@ -19,7 +19,7 @@ with:
 
 To solve this inverse problem, one typically looks for the abundance vector $\mathbf{\hat{a}}$ that minimizes the discrepancy between the model and the observation. This approach is framed as a least squares optimization:
 
-$$\displaystyle \mathbf{\hat{a}} =\arg \min_{\mathbf{a}} \|\mathbf{y} - \mathbf{E}\mathbf{a}\|_2^2$$
+$$\displaystyle \mathbf{\hat{a}} =\arg \min_{\mathbf{a}} \lVert\mathbf{y} - \mathbf{E}\mathbf{a}\rVert_2^2$$
 
 In more complex scenarri, several degrading phenomena (e.g., spectral coloring, chemical interaction, multiple scattering, shadowing, occlusion, fluence attenuation) make the inverse problem nonlinear, unstable, and/or ill-posed. In these circumstances, the unmixing task is markedly more challenging, and more advanced algorithms than least squares optimization must be used.
 
