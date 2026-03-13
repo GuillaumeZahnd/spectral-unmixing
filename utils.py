@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def objective_function(a: np.ndarray, M: np.ndarray, y: np.ndarray) -> float:
@@ -39,3 +41,10 @@ def generate_abundance_map(height: int, width: int, nb_endmembers: int) -> np.nd
     abundance_map /= np.sum(abundance_map, axis=2, keepdims=True)
 
     return abundance_map
+    
+
+def nice_colorbar(im, ax):
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.05)
+    cbar = plt.colorbar(im, cax=cax)
+    return cbar    
