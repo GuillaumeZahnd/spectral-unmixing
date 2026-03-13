@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from scipy.stats import pearsonr, linregress
 
 
 def plot_endmember_spectral_signatures(
@@ -57,6 +58,44 @@ def plot_abundance_maps(abundance_map, abundance_map_estimated, abundance_map_er
             if col == 0: ax.set_ylabel(labels[row], fontsize=12)
             ax.set_xticks([]);
             ax.set_yticks([])
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_linear_regression_and_bland_altman(abundance_map, abundance_map_estimated):
+
+    y_gt = abundance_map.flatten()
+    y_hat = abundance_map_estimated.flatten()
+
+    r, _ = pearsonr(y_gt, y_hat)
+    slope, intercept, _, _, _ = linregress(y_gt, y_hat)
+
+    difference = y_hat - y_gt
+    mean_val = (y_hat + y_gt) / 2
+    difference_mean = np.mean(difference)
+    difference_std = np.std(difference)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+    # Scatter plot and regression
+    ax1.scatter(y_gt, y_hat, alpha=0.5, color="darkorange", s=20)
+    ax1.plot(y_gt, slope * y_gt + intercept, linewidth=2, color="steelblue", label=f"Fit: y={slope:.2f}x + {intercept:.2f}")
+    ax1.plot([0, 1], [0, 1], color="black", linewidth=2, linestyle="--", label="Identity (y=x)")
+    ax1.set_xlabel("True abundance", fontsize=12)
+    ax1.set_ylabel("Estimated abundance", fontsize=12)
+    ax1.set_title(f"Scatter plot (Pearson r = {r:.3f})", fontsize=14)
+    ax1.legend()
+
+    # Bland-Altman plot
+    ax2.scatter(mean_val, difference, alpha=0.5, color="darkorange", s=20)
+    ax2.axhline(difference_mean, linewidth=2, color="steelblue", linestyle="-", label=f"Mean difference: {difference_mean:.3f}")
+    ax2.axhline(difference_mean + 1.96*difference_std, linewidth=2, color="steelblue", linestyle="--", label=f"+1.96 difference_std: {difference_mean + 1.96*difference_std:.3f}")
+    ax2.axhline(difference_mean - 1.96*difference_std, linewidth=2, color="steelblue", linestyle="--", label=f"-1.96 difference_std: {difference_mean - 1.96*difference_std:.3f}")
+    ax2.set_xlabel("Average Abundance", fontsize=12)
+    ax2.set_ylabel("Signed difference (Estimated - Ground truth)", fontsize=12)
+    ax2.set_title("Bland-Altman plot", fontsize=14)
+    ax2.legend(loc="upper right")
 
     plt.tight_layout()
     plt.show()
