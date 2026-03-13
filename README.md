@@ -4,16 +4,16 @@
 
 ## Definition
 
-In the simplest case, given a medium containing $p$ different materials (endmembers) observed under $L$ spectral bands (wavelengths), the observed reflectance at each pixel can be modeled by:
+In the simplest case, given a medium containing $K$ different materials (endmembers) observed under $L$ spectral bands (wavelengths), the observed reflectance at each pixel can be modeled by:
 
 $$\displaystyle \mathbf{y} = \mathbf{E}\mathbf{a} + \mathbf{n}$$
 
 with:
 
-- $\mathbf{y}:$ Observed pixel vector, of shape $(L,)$.
-- $\mathbf{E}:$ Endmember matrix, of shape $(L, p)$, where each column is the spectral signature of a material.
-- $\mathbf{a}:$ Fractional abundance vector, of shape $(p,)$.
-- $\mathbf{n}:$ Additive measurement noise vector, of shape $(L,)$.
+- $\mathbf{y} \in \mathbb{R}^L:$ Observed pixel vector.
+- $\mathbf{E} \in \mathbb{R}^{L \times K}:$ Endmember matrix, where each column is the spectral signature of a material.
+- $\mathbf{a} \in \mathbb{R}^K:$ Fractional abundance vector, s.t. $a_k \geq 0$ (non-negativity) and $\sum a_k = 1$ (sum-to-one).
+- $\mathbf{n} \in \mathbb{R}^L:$ Additive measurement noise vector.
 
 **Spectral unmixing** is the process of decomposing the measured spectrum of a mixed pixel into a collection of constituent spectral signatures (endmembers) and their corresponding proportions (abundances). While the forward process (mixing) combines materials into a single observation (reflectance), unmixing seeks to solve the inverse problem to reveal the underlying composition of the scene.
 
